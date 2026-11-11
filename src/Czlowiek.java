@@ -39,7 +39,7 @@ public class Czlowiek extends Zwierze{
     }
 
     @Override
-    public void akcja() {
+    protected void przedRuchem() {
         if (umiejetnosc > 1) {
             umiejetnosc--;
             String napis = "pozostalo ";
@@ -48,27 +48,25 @@ public class Czlowiek extends Zwierze{
 
             swiat.komunikat(this, napis);
         }
-        if (getWiek() == 0) {
-            postarzWiek();
-            return;
-        }
-        postarzWiek();
+    }
+
+    @Override
+    protected koordynaty wybierzPole() {
         kierunek = wybierzKierunekCzlowiek(wejscie);
         int x1 = 0, y1 = 0;
         if (kierunek == Kierunek.brak) {
             swiat.komunikat(this, "nie moze sie ruszyc ");
-            return;
+            return null;
         }
         if (kierunek == Kierunek.gora) x1 = -1;
         if (kierunek == Kierunek.dol)x1 = 1;
         if (kierunek == Kierunek.lewo)y1 = -1;
         if (kierunek == Kierunek.prawo)y1 = 1;
-        if (!swiat.czyRuchMozliwy(getX()+x1, getY()+y1)){swiat.komunikat(this,"Czlowiek chce wyjsc poza plansze ");return; }
-        if (swiat.getMapaOrganizmow()[getX() + x1][getY() + y1] == null)swiat.przestawOrganizm(this, getX() + x1, getY() + y1);
-        else {
-            Organizm inny = swiat.getMapaOrganizmow()[getX() + x1][getY() + y1];
-            inny.kolizja(this);
-        }
+        if (!swiat.czyRuchMozliwy(getX()+x1, getY()+y1)){swiat.komunikat(this,"Czlowiek chce wyjsc poza plansze ");return null; }
+        koordynaty pole = new koordynaty();
+        pole.x = getX() + x1;
+        pole.y = getY() + y1;
+        return pole;
     }
 
     public void setUmiejetnosc(int umiejetnosc) {

@@ -5,39 +5,45 @@ public abstract class Zwierze extends Organizm{
         this.predkosc=1;
     }
 
-    private Kierunek wybierzKierunek() {
-        int i = 0;
-        Kierunek kierunek=Kierunek.brak;
-        while (true) {
-            if (i >= 20) {
-                System.out.println("nie znaleziono kierunku ");
-                return kierunek;
-            }
-             kierunek = Losuj.wybierz_kierunek(swiat.getRand());
-            koordynaty pole = Losuj.ustaw_pozycje(kierunek,x,y,predkosc) ;
-            if (swiat.czyRuchMozliwy(pole.x, pole.y)) break;
-            i++;
-        }
-        return kierunek;
-    }
     @Override
     public void akcja() {
+        przedRuchem();
         if (getWiek() == 0) {
             postarzWiek();
             return;
         }
         postarzWiek();
-        Kierunek kierunek = wybierzKierunek();
+        koordynaty pole = wybierzPole();
+        if (pole == null) return;
+        Organizm cel = swiat.getMapaOrganizmow()[pole.x][pole.y];
+        if (cel == null) swiat.przestawOrganizm(this, pole.x, pole.y);
+        else cel.kolizja(this);
+    }
 
+    protected void przedRuchem() {
+    }
+
+    // null = brak ruchu w tej turze (komunikat wysyla hook)
+    protected koordynaty wybierzPole() {
+        Kierunek kierunek = wybierzKierunek();
         if (kierunek == Kierunek.brak) {
             swiat.komunikat(this, "nie moze sie ruszyc ");
-            return;
+            return null;
         }
+        return Losuj.ustaw_pozycje(kierunek, x, y, predkosc);
+    }
 
-        koordynaty pole;
-        pole = Losuj.ustaw_pozycje(kierunek,x,y,predkosc);
-        if (swiat.getMapaOrganizmow()[pole.x][pole.y] == null)swiat.przestawOrganizm(this, pole.x, pole.y);
-        else swiat.getMapaOrganizmow()[pole.x][pole.y].kolizja(this);
+    protected Kierunek wybierzKierunek() {
+        int i = 0;
+        Kierunek kierunek=Kierunek.brak;
+        while (true) {
+            if (i >= 20) return kierunek;
+            kierunek = Losuj.wybierz_kierunek(swiat.getRand());
+            koordynaty pole = Losuj.ustaw_pozycje(kierunek,x,y,predkosc) ;
+            if (swiat.czyRuchMozliwy(pole.x, pole.y)) break;
+            i++;
+        }
+        return kierunek;
     }
 
     @Override

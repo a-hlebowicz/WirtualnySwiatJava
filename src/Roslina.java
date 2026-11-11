@@ -32,8 +32,12 @@ public abstract class Roslina extends Organizm {
         } else if (getSila() < inny.getSila()) {
             swiat.komunikat(inny, "atakuje ");
             swiat.komunikat(this, "przegrywa ");
+            poZjedzeniu(inny);
             swiat.zastapOrganizm(inny, this);
         }
+    }
+
+    protected void poZjedzeniu(Organizm zjadajacy) {
     }
 }
 
