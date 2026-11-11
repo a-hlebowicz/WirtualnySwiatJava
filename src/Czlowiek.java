@@ -1,11 +1,13 @@
 public class Czlowiek extends Zwierze{
-    int umiejetnosc;
+    private static final String IKONA = "src/ikony/gracz.png";
+    private static final String IKONA_TARCZA = "src/ikony/gracz_tarcza.png";
+    private StanTarczy tarcza;
     Kierunek kierunek;
     char wejscie;
     public Czlowiek(Swiat swiat, int x, int y) {
-        super(swiat, x, y, Gatunek.CZLOWIEK, 5, 5, "src/ikony/gracz.png");
+        super(swiat, x, y, Gatunek.CZLOWIEK, 5, 5, IKONA);
         this.kierunek=Kierunek.brak;
-        this.umiejetnosc=0;
+        this.tarcza = new TarczaGotowa(0);
         this.wejscie='1';
     }
     public Kierunek wybierzKierunekCzlowiek(char wejscie)
@@ -20,19 +22,26 @@ public class Czlowiek extends Zwierze{
    {
        wejscie = c;
    }
-   public void aktywujUmietnosc() {
-        if (umiejetnosc<2) {
-            umiejetnosc = 10;
-            ikona = "src/ikony/gracz_tarcza.png";
-        }
+    public void aktywujUmietnosc() {
+        zmienStan(tarcza.aktywuj());
     }
-   public int getUmiejetnosc() {
-        return umiejetnosc;
+    public int getUmiejetnosc() {
+        return tarcza.licznik();
     }
-@Override
-   public void kolizja(Organizm atakujacy) {
-        if (umiejetnosc < 6) super.kolizja(atakujacy);
-	else {
+    public void setUmiejetnosc(int umiejetnosc) {
+        this.tarcza = StanTarczy.zLicznika(umiejetnosc);
+    }
+
+    private void zmienStan(StanTarczy nowy) {
+        if (nowy == tarcza) return;
+        tarcza = nowy;
+        ikona = tarcza.chroni() ? IKONA_TARCZA : IKONA;
+    }
+
+    @Override
+    public void kolizja(Organizm atakujacy) {
+        if (!tarcza.chroni()) super.kolizja(atakujacy);
+        else {
             swiat.tarczaPrzegon(atakujacy);
             swiat.komunikat(this, "przegania tarcza ");
         }
@@ -40,14 +49,7 @@ public class Czlowiek extends Zwierze{
 
     @Override
     protected void przedRuchem() {
-        if (umiejetnosc > 1) {
-            umiejetnosc--;
-            String napis = "pozostalo ";
-            if (umiejetnosc > 5) { napis = napis + (umiejetnosc-5); napis = napis + " tur umiejetnosci";  ikona = "src/ikony/gracz_tarcza.png";}
-            else { napis = napis + (umiejetnosc); napis = napis + " do odnowienia umiejetnosci"; ikona="src/ikony/gracz.png";}
-
-            swiat.komunikat(this, napis);
-        }
+        zmienStan(tarcza.poTurze(napis -> swiat.komunikat(this, napis)));
     }
 
     @Override
@@ -67,9 +69,5 @@ public class Czlowiek extends Zwierze{
         pole.x = getX() + x1;
         pole.y = getY() + y1;
         return pole;
-    }
-
-    public void setUmiejetnosc(int umiejetnosc) {
-        this.umiejetnosc=umiejetnosc;
     }
 }
