@@ -8,7 +8,7 @@ public class Main {
         Czlowiek czlowiek = new Czlowiek(swiat,rand.nextInt(20), rand.nextInt(20));
         swiat.dodajCzlowieka(czlowiek);
         swiat.ustawSwiat();
-        Okno okno = new Okno(swiat, czlowiek);
+        Okno okno = new Okno(swiat, czlowiek, new SerializatorSwiata());
         swiat.dodajObserwatora(okno);
     }
 }

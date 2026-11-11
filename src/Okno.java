@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.List;
 
 public class Okno extends JFrame implements ActionListener, KeyListener, ObserwatorSwiata {
@@ -15,13 +16,15 @@ public class Okno extends JFrame implements ActionListener, KeyListener, Obserwa
 
     private final Swiat swiat;
     private final Czlowiek czlowiek;
+    private final SerializatorSwiata serializator;
     private final String[][] imagePaths;
 
     private final String[] dostepneOrganizmy = {"Owca", "Wilk", "Antylopa", "Zolw","Lis" , "Trawa", "Mlecz", "Guarana", "WilczeJagody", "BarszczSosnowskiego"};
 
-    Okno(Swiat swiat, Czlowiek czlowiek) {
+    Okno(Swiat swiat, Czlowiek czlowiek, SerializatorSwiata serializator) {
         this.swiat = swiat;
         this.czlowiek = czlowiek;
+        this.serializator = serializator;
         this.setTitle("Wirtualny Świat");
         this.setSize(553, 762);
         this.setResizable(false);
@@ -119,13 +122,33 @@ public class Okno extends JFrame implements ActionListener, KeyListener, Obserwa
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loadItem) {
-            swiat.wczytajZPliku(czlowiek);
-            appendToTextArea("Wczytano stan gry.");
+            wczytaj();
         } else if (e.getSource() == saveItem) {
-            swiat.zapiszDoPliku(czlowiek);
-            appendToTextArea("Zapisano stan gry.");
+            zapisz();
         } else if (e.getSource() == nextTurnItem) {
             swiat.wykonajTure();
+        }
+    }
+
+    private void zapisz() {
+        JFileChooser wybor = new JFileChooser(".");
+        if (wybor.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
+        try (Writer plik = new FileWriter(wybor.getSelectedFile())) {
+            serializator.zapisz(swiat, czlowiek, plik);
+            appendToTextArea("Zapisano stan gry.");
+        } catch (IOException ex) {
+            appendToTextArea("Nie udało się zapisać pliku: " + ex.getMessage());
+        }
+    }
+
+    private void wczytaj() {
+        JFileChooser wybor = new JFileChooser(".");
+        if (wybor.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
+        try (Reader plik = new FileReader(wybor.getSelectedFile())) {
+            serializator.wczytaj(swiat, czlowiek, plik);
+            appendToTextArea("Wczytano stan gry.");
+        } catch (IOException ex) {
+            appendToTextArea("Nie udało się wczytać pliku: " + ex.getMessage());
         }
     }
 

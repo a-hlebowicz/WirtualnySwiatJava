@@ -1,5 +1,3 @@
-import java.io.*;
-import java.util.Scanner;
 import java.util.*;
 import java.util.List;
 
@@ -208,80 +206,22 @@ public class Swiat {
             else return organizm2.getWiek() - organizm1.getWiek();
         }
     }
-    public void zapiszDoPliku(Czlowiek czlowiek) {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Podaj nazwe pliku: ");
-            String nazwaPliku = scanner.nextLine();
-            FileWriter plik = new FileWriter(nazwaPliku);
-            plik.write(tura + "\n");
-            plik.write(czlowiek.getSymbol() + " ");
-            plik.write(czlowiek.getX() + " " + czlowiek.getY() + " ");
-            plik.write(czlowiek.getSila() + " ");
-            plik.write(czlowiek.getWiek() + " ");
-            plik.write(czlowiek.getUmiejetnosc() + "\n");
-            for (int i=1;20>=i;i++) {
-                for (int j=1;20>=j;j++) {
-                    Organizm organizm=mapaOrganizmow[i][j];
-                    if (organizm==null || organizm.getSymbol() == 'X') continue;
-                    plik.write(organizm.getSymbol() + " ");
-                    plik.write(organizm.getX() + " " + organizm.getY() + " ");
-                    plik.write(organizm.getSila() + " ");
-                    plik.write(organizm.getWiek() + "\n");
-                }
-            }
-            plik.write('K' + "\n");
-            plik.close();
-            System.out.println("Gra została zapisana.");
-        } catch (IOException e) {
-            System.out.println("Nie udało się otworzyć pliku.");
-        }
+    public int getTura() { return tura; }
+    public int getSzerokosc() { return szerokosc; }
+    public int getWysokosc() { return wysokosc; }
+
+    public void wyczysc(int nowaTura) {
+        wyczyscSwiat();
+        usunOrganizmyZListy();
+        tura = nowaTura;
     }
-    void wyczyscSwiat(){
+    private void wyczyscSwiat(){
         Organizm organizm;
         for (int i=1;20>=i;i++){
             for (int j=1;20>=j;j++){
                 organizm = mapaOrganizmow[i][j];
                 if (organizm!=null)usunOrganizm(organizm);
             }
-        }
-    }
-    public void wczytajZPliku(Czlowiek czlowiek) {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Podaj nazwe pliku: ");
-            String nazwaPliku = scanner.nextLine();
-            File plik = new File(nazwaPliku);
-            Scanner plikScanner = new Scanner(plik);
-            wyczyscSwiat();
-            usunOrganizmyZListy();
-
-            this.tura= plikScanner.nextInt();
-            while (plikScanner.hasNextLine()) {
-                char symbol = plikScanner.next().charAt(0);
-                if (symbol == 'K') break;
-                int x = plikScanner.nextInt();
-                int y = plikScanner.nextInt();
-                int sila = plikScanner.nextInt();
-                int wiek = plikScanner.nextInt();
-                if (symbol == 'X') {
-                    czlowiek.setX(x);
-                    czlowiek.setY(y);
-                    czlowiek.setSila(sila);
-                    czlowiek.setWiek(wiek);
-                    int umiejetnosc = plikScanner.nextInt();
-                    czlowiek.setUmiejetnosc(umiejetnosc);
-                    dodajCzlowieka(czlowiek);
-                } else {
-                    Organizm organizm = dodajOrganizm(symbol, x, y);
-                    organizm.setSila(sila);
-                    organizm.setWiek(wiek);
-                }
-            }
-            plikScanner.close();
-            System.out.println("Gra została wczytana.");
-        } catch (FileNotFoundException e) {
-            System.out.println("Plik nie został znaleziony.");
         }
     }
 }
