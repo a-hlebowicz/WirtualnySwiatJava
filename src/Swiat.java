@@ -15,6 +15,7 @@ public class Swiat {
     private final Queue<String> komunikaty;
     private final Queue<Organizm> doDodania;
     private final Random rand;
+    private final List<ObserwatorSwiata> obserwatorzy = new ArrayList<>();
 
 
 
@@ -37,9 +38,14 @@ public class Swiat {
 
         komunikaty.add(napis);
     }
-    public void wyswietlKomunikaty(Okno okno){
-        while (!komunikaty.isEmpty()){
-           okno.appendToTextArea(komunikaty.poll());
+    public void dodajObserwatora(ObserwatorSwiata obserwator) {
+        obserwatorzy.add(obserwator);
+    }
+    private void powiadomObserwatorow() {
+        List<String> komunikatyTury = List.copyOf(komunikaty);
+        komunikaty.clear();
+        for (ObserwatorSwiata obserwator : obserwatorzy) {
+            obserwator.poTurze(tura, komunikatyTury);
         }
     }
 
@@ -153,7 +159,7 @@ public class Swiat {
         przestawOrganizm(broniacy, pole.x, pole.y);
         przestawOrganizm(atakujacy, stary_x, stary_y);
     }
-    public void wykonajTure(Okno okno) {
+    public void wykonajTure() {
         tura++;
         usunOrganizmyZListy();
         listaOrganizmow.sort(new ktoPierwszy());
@@ -161,9 +167,7 @@ public class Swiat {
             if (mapaOrganizmow[organizm.getX()][organizm.getY()] == organizm)
                 organizm.akcja();
         }
-        okno.appendToTextArea("\n"+"tura " + tura);
-        wyswietlKomunikaty(okno);
-
+        powiadomObserwatorow();
     }
     public void ustawSwiat(){
         dodajOrganizm('W', rand.nextInt(20)+1, rand.nextInt(20)+1);

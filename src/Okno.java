@@ -1,8 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
-public class Okno extends JFrame implements ActionListener, KeyListener {
+public class Okno extends JFrame implements ActionListener, KeyListener, ObserwatorSwiata {
     JMenuBar menuBar;
     JMenu fileMenu;
     JMenuItem loadItem;
@@ -124,9 +125,17 @@ public class Okno extends JFrame implements ActionListener, KeyListener {
             swiat.zapiszDoPliku(czlowiek);
             appendToTextArea("Zapisano stan gry.");
         } else if (e.getSource() == nextTurnItem) {
-            swiat.wykonajTure(this);
-            updateBoard();
+            swiat.wykonajTure();
         }
+    }
+
+    @Override
+    public void poTurze(int tura, List<String> komunikaty) {
+        appendToTextArea("\n" + "tura " + tura);
+        for (String komunikat : komunikaty) {
+            appendToTextArea(komunikat);
+        }
+        updateBoard();
     }
 
     @Override
@@ -138,8 +147,7 @@ public class Okno extends JFrame implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyChar() == 'w' || e.getKeyChar() == 's' || e.getKeyChar() == 'a' || e.getKeyChar() == 'd') {
             czlowiek.setWejscie(e.getKeyChar());
-            swiat.wykonajTure(this);
-            updateBoard();
+            swiat.wykonajTure();
         }
         if (e.getKeyChar() == 'r') {
             czlowiek.aktywujUmietnosc();
