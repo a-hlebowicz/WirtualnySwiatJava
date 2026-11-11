@@ -1,7 +1,5 @@
-import java.util.Random;
 public abstract class Zwierze extends Organizm{
     int predkosc;
-    protected Random rand = new Random();
     public Zwierze(Swiat swiat, int x, int y, char symbol, int sila, int inicjatywa, String ikona) {
         super(swiat, x, y, symbol, sila, inicjatywa, ikona);
         this.predkosc=1;
@@ -15,7 +13,7 @@ public abstract class Zwierze extends Organizm{
                 System.out.println("nie znaleziono kierunku ");
                 return kierunek;
             }
-             kierunek = Losuj.wybierz_kierunek();
+             kierunek = Losuj.wybierz_kierunek(swiat.getRand());
             koordynaty pole = Losuj.ustaw_pozycje(kierunek,x,y,predkosc) ;
             if (swiat.czyRuchMozliwy(pole.x, pole.y)) break;
             i++;

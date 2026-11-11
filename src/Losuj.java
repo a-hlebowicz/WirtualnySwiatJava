@@ -1,8 +1,7 @@
 import java.util.Random;
 
 public class Losuj  {
-    protected static Random rand = new Random();
-    public static Kierunek wybierz_kierunek(){
+    public static Kierunek wybierz_kierunek(Random rand){
         int a = rand.nextInt(4);
         if (a == 0) { return Kierunek.prawo; }
         if (a == 1) { return Kierunek.lewo; }

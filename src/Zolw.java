@@ -6,7 +6,7 @@ public class Zolw extends Zwierze{
     @Override
     public void akcja() {
             postarzWiek();
-            if (rand.nextInt(4) == 2) {
+            if (swiat.getRand().nextInt(4) == 2) {
                 super.akcja();
                 setWiek(getWiek() - 1);
             }

@@ -5,7 +5,7 @@ public class Antylopa extends Zwierze{
 
     @Override
     public void kolizja(Organizm atakujacy) {
-        if (swiat.rand.nextInt(2) == 1 || atakujacy.getSymbol() == symbol) super.kolizja(atakujacy);
+        if (swiat.getRand().nextInt(2) == 1 || atakujacy.getSymbol() == symbol) super.kolizja(atakujacy);
         else {
             if (!swiat.czySasiadujaceWolne(x, y)) super.kolizja(atakujacy);
             else {

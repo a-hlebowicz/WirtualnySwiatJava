@@ -1,8 +1,5 @@
-import java.util.Random;
-
 public abstract class Roslina extends Organizm {
     private static final int SZANSA_NA_ROZPRZESTRZENIENIE = 20;
-    private final Random rand = new Random();
 
 
     public Roslina(Swiat swiat, int x, int y, char symbol, int sila,String ikona) {
@@ -10,7 +7,7 @@ public abstract class Roslina extends Organizm {
     }
 
     public void akcja() {
-        boolean czyRozprzestrzeni = rand.nextInt(SZANSA_NA_ROZPRZESTRZENIENIE) == 0;
+        boolean czyRozprzestrzeni = swiat.getRand().nextInt(SZANSA_NA_ROZPRZESTRZENIENIE) == 0;
         if (getWiek() <= 0) {
             postarzWiek();
             return;

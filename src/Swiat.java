@@ -14,11 +14,12 @@ public class Swiat {
     private final Queue<Organizm> doUsuniecia;
     private final Queue<String> komunikaty;
     private final Queue<Organizm> doDodania;
-    protected Random rand = new Random();
+    private final Random rand;
 
 
 
-    public Swiat(int szerokosc, int wysokosc) {
+    public Swiat(int szerokosc, int wysokosc, Random rand) {
+        this.rand = rand;
         this.szerokosc = szerokosc;
         this.wysokosc = wysokosc;
         this.mapaOrganizmow = new Organizm[szerokosc+1][wysokosc+1];
@@ -43,6 +44,7 @@ public class Swiat {
     }
 
     public Organizm[][] getMapaOrganizmow() { return mapaOrganizmow; }
+    public Random getRand() { return rand; }
 
     public Organizm dodajOrganizm(char symbol, int x, int y) {
         Organizm organizm = null;
@@ -111,7 +113,7 @@ public class Swiat {
                 pole.y = organizm.getY();
                 return pole;
             }
-            Kierunek kierunek = Losuj.wybierz_kierunek();
+            Kierunek kierunek = Losuj.wybierz_kierunek(rand);
             pole=Losuj.ustaw_pozycje(kierunek,organizm.getX(),organizm.getY(),1);
             if (czyPoleWolne(pole.x, pole.y)) return pole;
         }

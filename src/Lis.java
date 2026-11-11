@@ -31,7 +31,7 @@ public class Lis extends Zwierze{
         int i=0;
         while (true) {
             if (i >= 20)return Kierunek.brak;
-            kierunek = Losuj.wybierz_kierunek();
+            kierunek = Losuj.wybierz_kierunek(swiat.getRand());
             koordynaty pole = Losuj.ustaw_pozycje(kierunek,x,y,predkosc) ;
             if (swiat.czyRuchMozliwy(pole.x, pole.y))
                 if(swiat.getMapaOrganizmow()[pole.x][pole.y]==null || swiat.getMapaOrganizmow()[pole.x][pole.y].getSila()<=sila) break;
