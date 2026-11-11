@@ -1,7 +1,22 @@
-### IntelliJ IDEA ###
+### Java / build ###
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+*.class
+*.jar
+*.log
+hs_err_pid*
+target/
+build/
+.gradle/
+
+### IntelliJ IDEA ###
+.idea/workspace.xml
+.idea/shelf/
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.idea/httpRequests/
+*.iws
 
 ### Eclipse ###
 .apt_generated
@@ -25,5 +40,7 @@ bin/
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
+### Systemy operacyjne ###
 .DS_Store
+Thumbs.db
+desktop.ini
