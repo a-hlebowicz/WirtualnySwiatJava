@@ -2,8 +2,8 @@ public abstract class Roslina extends Organizm {
     private static final int SZANSA_NA_ROZPRZESTRZENIENIE = 20;
 
 
-    public Roslina(Swiat swiat, int x, int y, char symbol, int sila,String ikona) {
-        super(swiat, x, y, symbol, sila, 0, ikona);
+    public Roslina(Swiat swiat, int x, int y, Gatunek gatunek, int sila,String ikona) {
+        super(swiat, x, y, gatunek, sila, 0, ikona);
     }
 
     public void akcja() {

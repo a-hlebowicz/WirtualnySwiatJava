@@ -19,8 +19,6 @@ public class Okno extends JFrame implements ActionListener, KeyListener, Obserwa
     private final SerializatorSwiata serializator;
     private final String[][] imagePaths;
 
-    private final String[] dostepneOrganizmy = {"Owca", "Wilk", "Antylopa", "Zolw","Lis" , "Trawa", "Mlecz", "Guarana", "WilczeJagody", "BarszczSosnowskiego"};
-
     Okno(Swiat swiat, Czlowiek czlowiek, SerializatorSwiata serializator) {
         this.swiat = swiat;
         this.czlowiek = czlowiek;
@@ -91,13 +89,14 @@ public class Okno extends JFrame implements ActionListener, KeyListener, Obserwa
 
     private JPopupMenu getjPopupMenu(int i, int j) {
         JPopupMenu popupMenu = new JPopupMenu();
-        for (String organizm : dostepneOrganizmy) {
-            JMenuItem menuItem = new JMenuItem("Dodaj " + organizm);
+        for (Gatunek gatunek : Gatunek.values()) {
+            if (!gatunek.dodawalny()) continue;
+            JMenuItem menuItem = new JMenuItem("Dodaj " + gatunek.nazwa());
             final int x = i;
             final int y = j;
             menuItem.addActionListener(e -> {
-                swiat.dodajOrganizm(Zamiana.naSymbol(organizm), x + 1, y + 1);
-                appendToTextArea("Dodaj " + organizm + " do pola o koordynatach: " + x + "," + y);
+                swiat.dodajOrganizm(gatunek.symbol(), x + 1, y + 1);
+                appendToTextArea("Dodaj " + gatunek.nazwa() + " do pola o koordynatach: " + x + "," + y);
             });
             popupMenu.add(menuItem);
         }

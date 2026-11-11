@@ -1,17 +1,17 @@
 public abstract class Organizm {
     protected int x;
     protected int y;
-    protected char symbol;
+    private final Gatunek gatunek;
     protected int sila;
     protected int inicjatywa;
     protected int wiek;
     protected Swiat swiat;
     protected String ikona;
 
-    public Organizm(Swiat swiat, int x, int y, char symbol, int sila, int inicjatywa,String ikona) {
+    public Organizm(Swiat swiat, int x, int y, Gatunek gatunek, int sila, int inicjatywa,String ikona) {
         this.x = x;
         this.y = y;
-        this.symbol = symbol;
+        this.gatunek = gatunek;
         this.sila = sila;
         this.inicjatywa = inicjatywa;
         this.swiat = swiat;
@@ -21,7 +21,8 @@ public abstract class Organizm {
 
     public abstract void akcja();
     public abstract void kolizja(Organizm inny);
-    public char getSymbol() { return symbol; }
+    public char getSymbol() { return gatunek.symbol(); }
+    public String getNazwa() { return gatunek.nazwa(); }
     public int getSila() { return sila; }
     public int getInicjatywa() { return inicjatywa; }
     public int getX() { return x; }

@@ -1,7 +1,7 @@
 
 public class Mlecz extends Roslina{
     public Mlecz(Swiat swiat, int x, int y) {
-        super(swiat, x, y, 'M', 0, "src/ikony/mlecz.png");
+        super(swiat, x, y, Gatunek.MLECZ, 0, "src/ikony/mlecz.png");
     }
 
     @Override

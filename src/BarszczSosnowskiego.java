@@ -1,6 +1,6 @@
 public class BarszczSosnowskiego extends Roslina{
     public BarszczSosnowskiego(Swiat swiat, int x, int y) {
-        super(swiat, x, y, 'B', 99, "src/ikony/barszcz.png");
+        super(swiat, x, y, Gatunek.BARSZCZ_SOSNOWSKIEGO, 99, "src/ikony/barszcz.png");
         inicjatywa=0;
     }
     @Override
@@ -14,7 +14,7 @@ public class BarszczSosnowskiego extends Roslina{
             if (i == 3) { x1 = 0; y1 = -1; }
 
             if (swiat.czyRuchMozliwy(getX() + x1, getY() + y1)
-                    && swiat.jestZwierzeciem( swiat.getMapaOrganizmow()[getX() + x1][getY() + y1])) {
+                    && swiat.getMapaOrganizmow()[getX() + x1][getY() + y1] instanceof Zwierze) {
                 Organizm inny = swiat.getMapaOrganizmow()[getX() + x1][getY() + y1];
                 swiat.komunikat(this, "atakuje ");
                 swiat.komunikat(inny, "zatruty ");

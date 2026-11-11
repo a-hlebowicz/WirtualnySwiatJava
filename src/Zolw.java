@@ -1,6 +1,6 @@
 public class Zolw extends Zwierze{
     public Zolw(Swiat swiat, int x, int y) {
-        super(swiat, x, y, 'Z',2,1,"src/ikony/zolw.png");
+        super(swiat, x, y, Gatunek.ZOLW,2,1,"src/ikony/zolw.png");
     }
 
     @Override

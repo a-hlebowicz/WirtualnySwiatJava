@@ -1,6 +1,6 @@
 public class Guarana extends Roslina{
     public Guarana(Swiat swiat, int x, int y) {
-        super(swiat, x, y, 'G', 0, "src/ikony/guarana.png");
+        super(swiat, x, y, Gatunek.GUARANA, 0, "src/ikony/guarana.png");
     }
 
     @Override

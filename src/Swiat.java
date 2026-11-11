@@ -30,7 +30,7 @@ public class Swiat {
 
     public void komunikat(Organizm organizm, String text) {
         String napis;
-        napis = Zamiana.naNazwe(organizm.getSymbol());
+        napis = organizm.getNazwa();
         text = ":" + text;
         napis = napis + text;
 
@@ -51,48 +51,11 @@ public class Swiat {
     public Random getRand() { return rand; }
 
     public Organizm dodajOrganizm(char symbol, int x, int y) {
-        Organizm organizm = null;
-        if (mapaOrganizmow[x][y] != null) {
-            System.out.println("pole " + x + " , " + y + " jest zajete");
-        } else {
-
-            if (symbol == 'T') {
-                organizm = new Trawa(this, x, y);
-            }
-            if (symbol == 'M') {
-                organizm = new Mlecz(this, x, y);
-            }
-            if (symbol == 'B') {
-                organizm = new BarszczSosnowskiego(this, x, y);
-            }
-            if (symbol == 'G') {
-                organizm = new Guarana(this, x, y);
-            }
-            if (symbol == 'J') {
-                organizm = new WilczeJagody(this, x, y);
-            }
-            if (symbol == 'O') {
-                organizm = new Owca(this, x, y);
-            }
-            if (symbol == 'W') {
-                organizm = new Wilk(this, x, y);
-            }
-            if (symbol == 'L') {
-                organizm = new Lis(this, x, y);
-            }
-            if (symbol == 'Z') {
-                organizm = new Zolw(this, x, y);
-            }
-            if (symbol == 'A') {
-                organizm = new Antylopa(this, x, y);
-            }
-
-            if (organizm != null) {
-                mapaOrganizmow[organizm.getX()][organizm.getY()] = organizm;
-                doDodania.add(organizm);
-            }
-        }
-        if (organizm==null)System.out.print( symbol+ " "+x + " " + y);
+        Gatunek gatunek = Gatunek.zSymbolu(symbol);
+        if (gatunek == null || mapaOrganizmow[x][y] != null) return null;
+        Organizm organizm = gatunek.utworz(this, x, y);
+        mapaOrganizmow[x][y] = organizm;
+        doDodania.add(organizm);
         return organizm;
     }
     public void dodajCzlowieka(Organizm organizm) {
@@ -130,7 +93,7 @@ public class Swiat {
         while (!doUsuniecia.isEmpty()) {
             Organizm organizm = doUsuniecia.poll();
             listaOrganizmow.remove(organizm);
-            if (organizm.getSymbol() == 'X') organizm.setSila(-1);
+            if (organizm instanceof Czlowiek) organizm.setSila(-1);
         }
         while(!doDodania.isEmpty()){
             listaOrganizmow.add(doDodania.poll());
@@ -168,36 +131,12 @@ public class Swiat {
         powiadomObserwatorow();
     }
     public void ustawSwiat(){
-        dodajOrganizm('W', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('W', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('O', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('O', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('Z', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('Z', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('A', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('A', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('L', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('L', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('T', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('T', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('M', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('M', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('J', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('J', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('B', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('B', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('G', rand.nextInt(20)+1, rand.nextInt(20)+1);
-        dodajOrganizm('G', rand.nextInt(20)+1, rand.nextInt(20)+1);
-    }
-    public boolean jestZwierzeciem(Organizm organizm)
-    {
-        if (organizm == null)return false;
-        if (organizm.getSymbol() == 'O')return true;
-        if (organizm.getSymbol() == 'W')return true;
-        if (organizm.getSymbol() == 'L')return true;
-        if (organizm.getSymbol() == 'A')return true;
-        if (organizm.getSymbol() == 'Z')return true;
-        return organizm.getSymbol() == 'X';
+        for (Gatunek gatunek : Gatunek.values()) {
+            if (!gatunek.dodawalny()) continue;
+            for (int i = 0; i < 2; i++) {
+                dodajOrganizm(gatunek.symbol(), rand.nextInt(szerokosc) + 1, rand.nextInt(wysokosc) + 1);
+            }
+        }
     }
     static class ktoPierwszy implements Comparator<Organizm> {
         public int compare(Organizm organizm1, Organizm organizm2) {

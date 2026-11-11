@@ -3,7 +3,7 @@ public class Czlowiek extends Zwierze{
     Kierunek kierunek;
     char wejscie;
     public Czlowiek(Swiat swiat, int x, int y) {
-        super(swiat, x, y, 'X', 5, 5, "src/ikony/gracz.png");
+        super(swiat, x, y, Gatunek.CZLOWIEK, 5, 5, "src/ikony/gracz.png");
         this.kierunek=Kierunek.brak;
         this.umiejetnosc=0;
         this.wejscie='1';

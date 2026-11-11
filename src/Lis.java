@@ -1,6 +1,6 @@
 public class Lis extends Zwierze{
     public Lis(Swiat swiat, int x, int y) {
-        super(swiat, x, y, 'L', 3, 7, "src/ikony/lis.png");
+        super(swiat, x, y, Gatunek.LIS, 3, 7, "src/ikony/lis.png");
     }
 
 

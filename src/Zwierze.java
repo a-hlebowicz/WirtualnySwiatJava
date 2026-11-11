@@ -1,7 +1,7 @@
 public abstract class Zwierze extends Organizm{
     int predkosc;
-    public Zwierze(Swiat swiat, int x, int y, char symbol, int sila, int inicjatywa, String ikona) {
-        super(swiat, x, y, symbol, sila, inicjatywa, ikona);
+    public Zwierze(Swiat swiat, int x, int y, Gatunek gatunek, int sila, int inicjatywa, String ikona) {
+        super(swiat, x, y, gatunek, sila, inicjatywa, ikona);
         this.predkosc=1;
     }
 
